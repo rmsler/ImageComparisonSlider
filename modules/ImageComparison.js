@@ -17,19 +17,20 @@ function ImageComparison(imagesArray) {
       $.each(this.imagesArray["images"], function(index, value) {
         imgArray[index] = new Image(value);
       });
+      this.slider = new RevealingSlider();
       this.render(node, imgArray);
-      let slider = this.slider;
-      slider = new RevealingSlider(node);
     },
     render: function(wrapper) {
-        //render 1st image
-        let image1 = this.imgArray[0].render();
-        $(wrapper).append(image1);
-        //render slider
-        $(wrapper).append(this.slider);
-        //render 2nd image
-        let image2 = this.imgArray[1].render();
-        $(wrapper).append(image2);
+      //render 1st image
+      let image1 = this.imgArray[0].render();
+      $(wrapper).append(image1);
+      //render 2nd image
+      let image2 = this.imgArray[1].render();
+      $(wrapper).append(image2);
+      console.log($(image2)[0].offsetWidth)
+      //render slider
+      let slide = this.slider.render();
+      $(image2)[0].parentElement.insertBefore(slide,image2);
     }
 });
 
