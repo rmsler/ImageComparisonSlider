@@ -22,15 +22,12 @@ function ImageComparison(imagesArray) {
     },
     render: function(wrapper) {
       //render 1st image
-      let image1 = this.imgArray[0].render();
-      $(wrapper).append(image1);
+      this.imgArray[0].render(wrapper);
       //render 2nd image
-      let image2 = this.imgArray[1].render();
-      $(wrapper).append(image2);
-      console.log($(image2)[0].offsetWidth)
+      this.imgArray[1].render(wrapper);
       //render slider
       let slide = this.slider.render();
-      $(image2)[0].parentElement.insertBefore(slide,image2);
+      // $(image2)[0].parentElement.insertBefore(slide,image2);
     }
 });
 
