@@ -78,7 +78,7 @@ function RevealingSlider() {
       if (pos < 0) pos = 0;
       if (pos > this.position.width) pos = this.position.width;
       /*execute a function that will resize the overlay image according to the cursor:*/
-      this.slide(pos).bind(this);
+      this.slide(pos);
     },
     getCursorPos: function (e) {
       var a, x = 0;
