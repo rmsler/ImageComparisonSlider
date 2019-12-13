@@ -4,43 +4,43 @@ function RevealingSlider() {
     }
     this.domReference = null;
     this.clicked = 0;
+    this.width = 0;
+    this.height - 0;
   }
   Object.assign(RevealingSlider.prototype, {
-    render: function() {
+    render: function(image, position) {
       //container element
-      let initComparisons = this.initComparisons.bind(this);
       let domElement = document.createElement("div");
       domElement.classList.add("img-comp-slider");
       this.domReference = domElement;
-      initComparisons();
-      return domElement;
+      image.parentElement.insertBefore(this.domReference, image);
+      //initComparisons();
+      console.log("before", position.height);
+      this.width = position.width;
+      this.height = position.height;
+      this.initComparisons(position);
     },
-    initComparisons: function() {
+    initComparisons: function(position) {
+      
       let compareImages = this.compareImages.bind(this);
       /*find all elements with an "overlay" class:*/
-      let x = $(".img-comp-overlay");
+      let x = document.getElementsByClassName("img-comp-overlay");
       console.log($(".img-comp")[0].offsetWidth);
       for (let i = 0; i < x.length; i++) {
         /*once for each "overlay" element:
         pass the "overlay" element as a parameter when executing the compareImages function:*/
-        console.log(x[i].offsetWidth);
         compareImages(x[i]);
       }
     },
     compareImages: function (img) {
-      var slider, img, clicked = 0, w, h;
-      /*get the width and height of the img element*/
-      w = img.offsetWidth;
-      h = img.offsetHeight;
-      console.log(w);
       /*set the width of the img element to 50%:*/
-      //img.style.width = (w / 2) + "px";
+      img.style.width = (this.width / 2) + "px";
       /*create slider:*/
-      slider = this.domReference;
+      let slider = this.domReference;
       //console.log(slider);
       /*position the slider in the middle:*/
-      slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
-      slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+      slider.style.top = (this.height / 2) - (slider.offsetHeight / 2) + "px";
+      slider.style.left = (this.width / 2) - (slider.offsetWidth / 2) + "px";
       /*execute a function when the mouse button is pressed:*/
       slider.addEventListener("mousedown", this.slideReady);
       /*and another function when the mouse button is released:*/

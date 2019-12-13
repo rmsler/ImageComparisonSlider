@@ -22,12 +22,17 @@ function ImageComparison(imagesArray) {
     },
     render: function(wrapper) {
       //render 1st image
-      this.imgArray[0].render(wrapper);
+      this.imgArray[0].render(wrapper, this.imageLoadedCallback.bind(this));
       //render 2nd image
-      this.imgArray[1].render(wrapper);
+      this.imgArray[1].render(wrapper, this.imageLoadedCallback.bind(this));
       //render slider
-      let slide = this.slider.render();
-      // $(image2)[0].parentElement.insertBefore(slide,image2);
+      
+    },
+    imageLoadedCallback: function(boundingClientRect, element){
+      if(element === "img-comp-overlay"){
+        console.log(boundingClientRect, " insider");
+        this.slider.render(this.imgArray[1].domReference, boundingClientRect);
+      }
     }
 });
 

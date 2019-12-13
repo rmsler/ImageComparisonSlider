@@ -1,12 +1,10 @@
 {
     "images": [
         {
-            "Name": "Colorized",
             "Location": "./images/color.jpg",
             "Class": "img-comp"
         },
         {
-            "Name": "BlackAndWhite",
             "Location": "./images/blacknwhite.jpg",
             "Class": "img-comp-overlay"
         }
