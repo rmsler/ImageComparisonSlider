@@ -30,7 +30,9 @@ function ImageComparison(imagesArray) {
     },
     imageLoadedCallback: function(boundingClientRect, element){
       if(element === "img-comp-overlay"){
-        console.log(boundingClientRect, " insider");
+        /* position the second image in the middle: */
+        this.imgArray[1].domReference.style.width = (boundingClientRect.width / 2) + "px";
+        /* render the slider */
         this.slider.render(this.imgArray[1].domReference, boundingClientRect);
       }
     }
