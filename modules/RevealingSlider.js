@@ -6,6 +6,8 @@ function RevealingSlider() {
     this.clicked = 0;
     this.width = 0;
     this.height - 0;
+    this.position = null;
+    this.image = null;
   }
   Object.assign(RevealingSlider.prototype, {
     render: function(image, position) {
@@ -19,6 +21,8 @@ function RevealingSlider() {
       this.width = position.width;
       this.height = position.height;
       this.initComparisons(position);
+      this.position = position;
+      this.image = image;
     },
     initComparisons: function(position) {
       
@@ -42,13 +46,13 @@ function RevealingSlider() {
       slider.style.top = (this.height / 2) - (slider.offsetHeight / 2) + "px";
       slider.style.left = (this.width / 2) - (slider.offsetWidth / 2) + "px";
       /*execute a function when the mouse button is pressed:*/
-      slider.addEventListener("mousedown", this.slideReady);
+      slider.addEventListener("mousedown", this.slideReady.bind(this));
       /*and another function when the mouse button is released:*/
-      window.addEventListener("mouseup", this.slideFinish);
+      window.addEventListener("mouseup", this.slideFinish.bind(this));
       /*or touched (for touch screens:*/
-      slider.addEventListener("touchstart", this.slideReady);
+      slider.addEventListener("touchstart", this.slideReady.bind(this));
       /*and released (for touch screens:*/
-      window.addEventListener("touchstop", this.slideFinish);
+      window.addEventListener("touchstop", this.slideFinish.bind(this));
       
     },
     slideReady: function(e) {
@@ -57,8 +61,8 @@ function RevealingSlider() {
       /*the slider is now clicked and ready to move:*/
       this.clicked = 1;
       /*execute a function when the slider is moved:*/
-      window.addEventListener("mousemove", this.slideMove);
-      window.addEventListener("touchmove", this.slideMove);
+      window.addEventListener("mousemove", this.slideMove.bind(this));
+      window.addEventListener("touchmove", this.slideMove.bind(this));
     },
     slideFinish: function() {
       /*the slider is no longer clicked:*/
@@ -72,26 +76,26 @@ function RevealingSlider() {
       pos = this.getCursorPos(e)
       /*prevent the slider from being positioned outside the image:*/
       if (pos < 0) pos = 0;
-      if (pos > w) pos = w;
+      if (pos > this.position.width) pos = this.position.width;
       /*execute a function that will resize the overlay image according to the cursor:*/
-      this.slide(pos);
+      this.slide(pos).bind(this);
     },
     getCursorPos: function (e) {
       var a, x = 0;
       e = e || window.event;
       /*get the x positions of the image:*/
-      a = img.getBoundingClientRect();
+      //a = this.img.getBoundingClientRect();
       /*calculate the cursor's x coordinate, relative to the image:*/
-      x = e.pageX - a.left;
+      x = e.pageX - this.position.left;
       /*consider any page scrolling:*/
       x = x - window.pageXOffset;
       return x;
     },
     slide: function (x) {
       /*resize the image:*/
-      img.style.width = x + "px";
+      this.image.style.width = x + "px";
       /*position the slider:*/
-      slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+      this.domReference.style.left = this.image.offsetWidth - (this.domReference.offsetWidth / 2) + "px";
     }
   });
   export { RevealingSlider };
