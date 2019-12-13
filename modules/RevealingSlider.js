@@ -20,9 +20,9 @@ function RevealingSlider() {
       console.log("before", position.height);
       this.width = position.width;
       this.height = position.height;
-      this.initComparisons(position);
       this.position = position;
       this.image = image;
+      this.initComparisons(position);
     },
     initComparisons: function(position) {
       
