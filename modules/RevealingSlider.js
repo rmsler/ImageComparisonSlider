@@ -1,3 +1,5 @@
+import { DraggableObject } from "./DraggableObject.js";
+
 function RevealingSlider() {
     if (!(this instanceof RevealingSlider)) {
       return new RevealingSlider();
@@ -9,7 +11,10 @@ function RevealingSlider() {
     this.position = null;
     this.image = null;
   }
+
+  RevealingSlider.prototype = Object.create(DraggableObject.prototype);
   Object.assign(RevealingSlider.prototype, {
+    constructor: RevealingSlider,
     render: function(image, position) {
       this.width = position.width;
       this.height = position.height;
@@ -24,34 +29,17 @@ function RevealingSlider() {
       this.domReference.style.top = (this.height / 2) - (this.domReference.offsetHeight / 2) + "px";
       this.domReference.style.left = (this.width / 2) - (this.domReference.offsetWidth / 2) + "px";
       //init Comparisons;  
-      this.initComparisons();
+      this._dragInit();
     },
-
-    initComparisons: function () {
-      /*execute a function when the mouse button is pressed:*/
-      this.domReference.addEventListener("mousedown", this.slideReady.bind(this));
-      /*and another function when the mouse button is released:*/
-      window.addEventListener("mouseup", this.slideFinish.bind(this));
-      /*or touched (for touch screens:*/
-      this.domReference.addEventListener("touchstart", this.slideReady.bind(this));
-      /*and released (for touch screens:*/
-      window.addEventListener("touchstop", this.slideFinish.bind(this));
-      
-    },
-    slideReady: function(e) {
-      /*prevent any other actions that may occur when moving over the image:*/
-      e.preventDefault();
-      /*the slider is now clicked and ready to move:*/
+    
+    startDrag: function(e) {
       this.clicked = 1;
-      /*execute a function when the slider is moved:*/
-      window.addEventListener("mousemove", this.slideMove.bind(this));
-      window.addEventListener("touchmove", this.slideMove.bind(this));
     },
-    slideFinish: function() {
+    stopDrag: function() {
       /*the slider is no longer clicked:*/
       this.clicked = 0;
     },
-    slideMove: function (e) {
+    drag: function (e) {
       var pos;
       /*if the slider is no longer clicked, exit this function:*/
       if (this.clicked == 0) return false;
@@ -61,7 +49,7 @@ function RevealingSlider() {
       if (pos < 0) pos = 0;
       if (pos > this.position.width) pos = this.position.width;
       /*execute a function that will resize the overlay image according to the cursor:*/
-      this.slide(pos);
+      this.updatePositions(pos);
     },
     getCursorPos: function (e) {
       var a, x = 0;
@@ -72,7 +60,7 @@ function RevealingSlider() {
       x = x - window.pageXOffset;
       return x;
     },
-    slide: function (x) {
+    updatePositions: function (x) {
       /*resize the image:*/
       this.image.style.width = x + "px";
       /*position the slider:*/
